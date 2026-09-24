@@ -11,6 +11,7 @@ struct WordGuesserView: View {
     @Environment(\.words) var words
     
     @State private var game = WordGuesser()
+    @State private var seletion: Int = 0
     
     var body: some View {
         VStack {
@@ -21,33 +22,24 @@ struct WordGuesserView: View {
                     showView(for: game.attempts[index])
                 }
             }
+            Button("Restart Game") {
+                withAnimation {
+                    game = WordGuesser()
+                    game.reset(words: words)
+                }
+            }
         }
         .padding()
         .onChange(of: words.count, initial: true) {
             if game.attempts.count == 0 {
-                if words.count == 0 {
-                    game.masterWord.word = "AWAIT"
-                } else {
-                    game.masterWord.word = words.random(length: Int.random(in: 3...6)) ?? "ERROR"
-                }
-                game.guess.letters = Array(repeating: "", count: game.masterWord.word.count)
+                game.reset(words: words)
             }
         }
     }
     
     func showView(for word: Word) -> some View {
         HStack {
-            ForEach(word.letters.indices, id: \.self) { index in
-                RoundedRectangle(cornerRadius: 10)
-                    .contentShape(RoundedRectangle(cornerRadius: 10))
-                    .aspectRatio(1, contentMode: .fit)
-                    .foregroundStyle(.blue)
-                    .overlay {
-                        Text("\(word.letters[index])")
-                            .font(.system(size: 120))
-                            .minimumScaleFactor(9/120)
-                    }
-            }
+            WordView(word: word, selection: $seletion)
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color.clear)
                 .aspectRatio(1, contentMode: .fit)

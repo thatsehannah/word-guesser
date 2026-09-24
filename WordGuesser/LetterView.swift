@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct LetterView: View {
+    // MARK: Data in
+    let letter: Letter
+    
+    let letterShape = RoundedRectangle(cornerRadius: 10)
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        letterShape
+            .foregroundStyle(Color.orange)
+            .contentShape(letterShape)
+            .aspectRatio(1, contentMode: .fit)
+            .overlay {
+                Text(letter)
+                    .font(.system(size: 90))
+                    .minimumScaleFactor(9/90)
+            }
     }
 }
 
-#Preview {
-    LetterView()
-}
+//#Preview {
+//    LetterView(letter: "A")
+//}

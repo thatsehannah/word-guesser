@@ -20,4 +20,18 @@ struct WordGuesser {
         self.masterWord = Word(kind: .master(isHidden: false))
         self.guess = Word(kind: .guess, letters: Array(repeating: "", count: masterWord.letters.count))
     }
+    
+    mutating func setGuessLetter(_ letter: Letter, at index: Int) {
+        guess.letters[index] = letter
+    }
+    
+    mutating func reset(words: Words) {
+        if words.count == 0 {
+            masterWord.word = "AWAIT"
+        } else {
+            masterWord.word = words.random(length: Int.random(in: 3...6)) ?? "ERROR"
+        }
+        
+        guess.letters = Array(repeating: Word.empty, count: masterWord.word.count)
+    }
 }
