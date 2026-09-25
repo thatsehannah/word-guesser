@@ -21,6 +21,8 @@ struct WordView: View {
                     if selection == index, word.kind == .guess {
                         Selection.shape
                             .foregroundStyle(Selection.color)
+                    } else {
+                        Color.orange
                     }
                 }
                 .onTapGesture {
@@ -28,6 +30,7 @@ struct WordView: View {
                         selection = index
                     }
                 }
+                
         }
     }
     

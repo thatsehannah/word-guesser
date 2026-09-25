@@ -11,7 +11,8 @@ struct WordGuesserView: View {
     @Environment(\.words) var words
     
     @State private var game = WordGuesser()
-    @State private var seletion: Int = 0
+    @State private var selection: Int = 0
+    @State private var checker = UITextChecker()
     
     var body: some View {
         VStack {
@@ -22,6 +23,11 @@ struct WordGuesserView: View {
                     showView(for: game.attempts[index])
                 }
             }
+            LetterChooserView(choices: game.letterChoices) { letter in
+                game.setGuessLetter(letter, at: selection)
+                selection = (selection + 1) % game.guess.letters.count
+            }
+            Spacer()
             Button("Restart Game") {
                 withAnimation {
                     game = WordGuesser()
@@ -37,9 +43,17 @@ struct WordGuesserView: View {
         }
     }
     
+    func checkGuess(_ guess: String) {
+        if guess != "", checker.isAWord(guess) {
+            game.submitGuess()
+        } else {
+            game.guess.reset()
+        }
+    }
+    
     func showView(for word: Word) -> some View {
         HStack {
-            WordView(word: word, selection: $seletion)
+            WordView(word: word, selection: $selection)
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color.clear)
                 .aspectRatio(1, contentMode: .fit)
@@ -47,9 +61,12 @@ struct WordGuesserView: View {
                     if word.kind == .guess {
                         Button("Guess") {
                             withAnimation {
-                                print("random word = \(words.random(length: 5) ?? "none")")
+                                checkGuess(word.word.lowercased())
                             }
+                            
                         }
+                        .font(.system(size: 80))
+                        .minimumScaleFactor(8/80)
                     }
                 }
         }

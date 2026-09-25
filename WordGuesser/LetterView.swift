@@ -10,12 +10,13 @@ import SwiftUI
 struct LetterView: View {
     // MARK: Data in
     let letter: Letter
+    var isChooser: Bool = false
     
     let letterShape = RoundedRectangle(cornerRadius: 10)
     
     var body: some View {
         letterShape
-            .foregroundStyle(Color.orange)
+            .foregroundStyle(isChooser ? Color.clear : Color.orange)
             .contentShape(letterShape)
             .aspectRatio(1, contentMode: .fit)
             .overlay {

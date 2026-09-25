@@ -34,4 +34,17 @@ struct WordGuesser {
         
         guess.letters = Array(repeating: Word.empty, count: masterWord.word.count)
     }
+
+    
+    mutating func submitGuess() {
+        if guess.letters.count(where: {letter in letter == Word.empty }) == letterChoices.count {
+            return
+        }
+        
+        var attempt = guess
+        attempt.kind = .attempt(attempt.compareGuess(against: masterWord))
+        attempts.append(attempt)
+        
+        guess.letters = Array(repeating: Word.empty, count: guess.letters.count)
+    }
 }
