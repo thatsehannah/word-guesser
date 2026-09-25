@@ -16,7 +16,7 @@ struct LetterView: View {
     
     var body: some View {
         letterShape
-            .foregroundStyle(isChooser ? Color.clear : Color.orange)
+            .foregroundStyle(Color.clear)
             .contentShape(letterShape)
             .aspectRatio(1, contentMode: .fit)
             .overlay {

@@ -21,10 +21,19 @@ struct WordView: View {
                     if selection == index, word.kind == .guess {
                         Selection.shape
                             .foregroundStyle(Selection.color)
-                    } else {
-                        Color.orange
+                    }
+                    
+                    if let comparisonResults = word.comparisonResults {
+                        switch comparisonResults[index] {
+                        case .exact:
+                            Color.green
+                        case .inexact:
+                            Color.yellow
+                        default: Color.clear
+                        }
                     }
                 }
+                .border(Color.primary, width: word.kind == .guess ? 5 : 1)
                 .onTapGesture {
                     if word.kind == .guess {
                         selection = index
